@@ -31,9 +31,49 @@ function writeState(state) {
   fs.renameSync(tempPath, statePath);
 }
 
+function seedTestVideosIfRequested(state) {
+  if (process.env.SEED_TEST_VIDEOS !== "true" || state.videos.length) return state;
+
+  const seeds = [1, 2, 3]
+    .map((number) => ({
+      number,
+      base64: process.env["SEED_VIDEO_" + number + "_B64"]
+    }))
+    .filter((seed) => seed.base64);
+
+  if (!seeds.length) return state;
+
+  const now = new Date().toISOString();
+  seeds.forEach((seed, index) => {
+    const fileName = "test-program-" + seed.number + ".mp4";
+    fs.writeFileSync(path.join(videosDir, fileName), Buffer.from(seed.base64, "base64"));
+    state.videos.push({
+      id: "test-program-" + seed.number,
+      title: "Test Program " + seed.number,
+      duration: 2,
+      fileName,
+      originalName: fileName,
+      mimeType: "video/mp4",
+      size: fs.statSync(path.join(videosDir, fileName)).size,
+      enabled: true,
+      order: index,
+      createdAt: now
+    });
+  });
+
+  state.channel.scheduleEpoch = Date.now();
+  state.channel.updatedAt = now;
+  writeState(state);
+  return state;
+}
+
 export function ensureStore() {
   ensureDirectories();
-  if (!fs.existsSync(statePath)) writeState(freshState());
+  if (!fs.existsSync(statePath)) {
+    const state = freshState();
+    writeState(state);
+    seedTestVideosIfRequested(state);
+  }
 }
 
 export function getState() {
@@ -41,7 +81,7 @@ export function getState() {
   try {
     const parsed = JSON.parse(fs.readFileSync(statePath, "utf8"));
     if (!parsed.channel || !Array.isArray(parsed.videos)) throw new Error("Invalid channel state");
-    return parsed;
+    return seedTestVideosIfRequested(parsed);
   } catch {
     const corruptPath = statePath + ".corrupt-" + Date.now();
     try { fs.renameSync(statePath, corruptPath); } catch {}
