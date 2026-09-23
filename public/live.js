@@ -190,7 +190,7 @@
     if (switching) return;
     const live = livePosition();
     if (!live || live.item.id !== video.dataset.videoId) return;
-    if (Math.abs(video.currentTime - live.offset) > 2) {
+    if (Math.abs(video.currentTime - live.offset) > 0.75) {
       try { video.currentTime = live.offset; } catch {}
     }
   });
