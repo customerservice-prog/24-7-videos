@@ -228,3 +228,85 @@ button { font: inherit; }
   .viewer-actions { flex-direction: column; }
   .action-button { font-size: 12px; padding: 9px 11px; }
 }
+
+.entry-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255,48,79,.18), transparent 30%),
+    linear-gradient(160deg, #111827 0%, #05070b 62%, #020304 100%);
+}
+.entry-gate[hidden] { display: none; }
+.entry-card {
+  width: min(620px, 100%);
+  text-align: center;
+  padding: clamp(28px, 6vw, 58px);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 28px;
+  background: rgba(8,11,17,.76);
+  box-shadow: 0 30px 100px rgba(0,0,0,.42);
+  backdrop-filter: blur(22px);
+}
+.entry-logo {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #ff5d72, #c90d31);
+  box-shadow: 0 20px 70px rgba(255,48,79,.28);
+  font-size: 25px;
+  font-weight: 950;
+  letter-spacing: -.04em;
+}
+.entry-kicker {
+  margin: 0 0 8px;
+  color: #ff8093;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .18em;
+}
+.entry-card h1 {
+  margin: 0;
+  font-size: clamp(38px, 7vw, 72px);
+  line-height: .95;
+  letter-spacing: -.055em;
+}
+.entry-card > p:not(.entry-kicker) {
+  max-width: 500px;
+  margin: 18px auto 24px;
+  color: #b8c0cc;
+  line-height: 1.6;
+}
+.enter-button {
+  width: min(360px, 100%);
+  border: 0;
+  border-radius: 16px;
+  padding: 16px 22px;
+  background: linear-gradient(145deg, #ff5b74, #e41943);
+  color: #fff;
+  font-weight: 900;
+  font-size: 16px;
+  box-shadow: 0 18px 50px rgba(228,25,67,.28);
+  cursor: pointer;
+}
+.enter-button:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.enter-button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+.entry-note {
+  display: block;
+  margin-top: 16px;
+  color: #858f9d;
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+
+@media (max-width: 700px) {
+  .entry-gate { padding: 16px; }
+  .entry-card { border-radius: 22px; padding: 30px 20px; }
+  .entry-logo { width: 72px; height: 72px; border-radius: 20px; }
+}
