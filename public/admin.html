@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#081019">
+  <title>Channel Control</title>
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <div class="app-shell">
+    <section class="login-shell" id="loginShell">
+      <form class="login-card" id="loginForm">
+        <div class="logo">24/7</div>
+        <p class="kicker">CHANNEL CONTROL</p>
+        <h1>Run your live station.</h1>
+        <p class="muted">Upload the programming once. The channel keeps playing it in order around the clock.</p>
+        <label>
+          Admin password
+          <input id="passwordInput" type="password" autocomplete="current-password" placeholder="Enter password" required>
+        </label>
+        <button class="primary wide" type="submit">Open control room</button>
+        <p class="form-message" id="loginMessage"></p>
+      </form>
+    </section>
+
+    <div class="dashboard" id="dashboard" hidden>
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="logo small">24/7</div>
+          <div><strong>Channel Control</strong><span>Always-on programming</span></div>
+        </div>
+        <nav>
+          <a class="active" href="#programming">Programming</a>
+          <a href="#settings">Channel settings</a>
+          <a href="/" target="_blank" rel="noopener">Open live channel ↗</a>
+        </nav>
+        <button class="ghost wide" id="logoutButton" type="button">Sign out</button>
+      </aside>
+
+      <main class="main">
+        <header class="page-head">
+          <div>
+            <p class="kicker">LIVE OPERATIONS</p>
+            <h1>Programming</h1>
+            <p class="muted">Every active video airs once, in this exact order, before the rotation begins again.</p>
+          </div>
+          <button class="danger-outline" id="restartButton" type="button">Restart from #1</button>
+        </header>
+
+        <section class="stats-grid">
+          <article class="stat"><span>On air</span><strong id="statNow">Standby</strong></article>
+          <article class="stat"><span>Active videos</span><strong id="statCount">0</strong></article>
+          <article class="stat"><span>Full rotation</span><strong id="statCycle">0m</strong></article>
+          <article class="stat"><span>Video storage</span><strong id="statStorage">0 MB</strong></article>
+        </section>
+
+        <section class="panel live-panel">
+          <div class="panel-title">
+            <div><p class="kicker">CURRENT FEED</p><h2 id="previewTitle">Channel standby</h2></div>
+            <span class="live-badge"><i></i> LIVE</span>
+          </div>
+          <div class="preview-wrap">
+            <video id="previewVideo" muted playsinline></video>
+            <div class="preview-empty" id="previewEmpty">Upload your first program to put the channel on air.</div>
+          </div>
+          <p class="small-note" id="nextUpNote">Nothing queued yet.</p>
+        </section>
+
+        <section class="panel" id="programming">
+          <div class="panel-title">
+            <div><p class="kicker">PROGRAM LIBRARY</p><h2>Rotation order</h2></div>
+            <span class="small-note">Playlist edits restart the live rotation from item #1.</span>
+          </div>
+
+          <div class="dropzone" id="dropzone">
+            <input id="fileInput" type="file" accept="video/*,.mkv" multiple hidden>
+            <div class="drop-icon">＋</div>
+            <h3>Drop videos here</h3>
+            <p>or choose files from your computer</p>
+            <button class="primary" id="chooseButton" type="button">Choose videos</button>
+            <p class="compatibility">For the widest browser support, use MP4 with H.264 video and AAC audio.</p>
+          </div>
+
+          <div class="upload-list" id="uploadList"></div>
+          <div class="program-list" id="programList"></div>
+        </section>
+
+        <section class="panel" id="settings">
+          <div class="panel-title"><div><p class="kicker">BRANDING</p><h2>Channel settings</h2></div></div>
+          <form class="settings-form" id="settingsForm">
+            <label>Channel name<input id="channelNameInput" maxlength="50" required></label>
+            <label>Tagline<input id="channelTaglineInput" maxlength="100"></label>
+            <button class="primary" type="submit">Save channel settings</button>
+            <span class="form-message" id="settingsMessage"></span>
+          </form>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="/admin.js" defer></script>
+</body>
+</html>
