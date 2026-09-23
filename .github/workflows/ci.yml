@@ -1,0 +1,34 @@
+name: Verify 24/7 Channel
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check server/index.js
+          node --check server/auth.js
+          node --check server/store.js
+          node --check server/schedule.js
+          node --check public/live.js
+          node --check public/admin.js
+
+      - name: Run schedule tests
+        run: npm test
