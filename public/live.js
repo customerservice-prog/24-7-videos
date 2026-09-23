@@ -11,12 +11,15 @@
   const soundIcon = document.getElementById("soundIcon");
   const fullscreenButton = document.getElementById("fullscreenButton");
   const connectionBadge = document.getElementById("connectionBadge");
+  const entryGate = document.getElementById("entryGate");
+  const enterButton = document.getElementById("enterButton");
 
   let state = null;
   let serverOffsetMs = 0;
   let switching = false;
   let retryTimer = null;
   let lastPlaylistVersion = null;
+  let hasEntered = false;
 
   video.controls = false;
   video.muted = true;
@@ -62,8 +65,10 @@
     try {
       await video.play();
     } catch {
-      video.muted = true;
-      soundIcon.textContent = "Sound on";
+      if (!hasEntered) {
+        video.muted = true;
+        soundIcon.textContent = "Sound on";
+      }
       try { await video.play(); } catch {}
     }
   }
@@ -141,6 +146,19 @@
       retryTimer = setTimeout(refreshState, 3000);
     }
   }
+
+  enterButton.addEventListener("click", async () => {
+    hasEntered = true;
+    entryGate.hidden = true;
+    video.muted = false;
+    soundIcon.textContent = "Mute";
+    syncPlayback(true);
+    await safePlay();
+
+    try {
+      if (!document.fullscreenElement) await shell.requestFullscreen();
+    } catch {}
+  });
 
   soundButton.addEventListener("click", async () => {
     video.muted = !video.muted;
