@@ -180,6 +180,8 @@
   video.addEventListener("ended", () => syncPlayback(true));
   video.addEventListener("error", () => {
     connectionBadge.hidden = false;
+    switching = false;
+    video.removeAttribute("data-video-id");
     setTimeout(() => syncPlayback(true), 1800);
   });
 
